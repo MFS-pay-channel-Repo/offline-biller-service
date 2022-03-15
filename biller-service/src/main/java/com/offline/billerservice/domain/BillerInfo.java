@@ -28,5 +28,5 @@ public class BillerInfo {
     private String merchantNumber;
 
     @Column(name="biller_details")
-    private byte[] billerDetails;
+    private String billerDetails;
 }

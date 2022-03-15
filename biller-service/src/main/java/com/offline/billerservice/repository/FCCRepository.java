@@ -1,4 +1,4 @@
-package com.offline.billerservice.dao;
+package com.offline.billerservice.repository;
 
 import com.offline.billerservice.domain.FCC;
 import org.springframework.data.jpa.repository.JpaRepository;

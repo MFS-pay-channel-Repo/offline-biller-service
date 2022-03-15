@@ -7,7 +7,7 @@ import java.util.ArrayList;
 @Data
 public class BillerCoreTransactionRequest {
     private String TransactionTypeKeyWord;
-    private float Amount;
+    private String Amount;
     private String FromAccount;
     private String ToAccount;
     private String PIN;
