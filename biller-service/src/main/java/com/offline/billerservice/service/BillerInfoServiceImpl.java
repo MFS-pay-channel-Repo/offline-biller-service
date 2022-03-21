@@ -8,11 +8,14 @@ import com.offline.billerservice.dto.*;
 import com.offline.billerservice.gateway.ApiManagerGateway;
 import com.offline.billerservice.repository.BillerInfoRepository;
 //import jdk.nashorn.internal.parser.JSONParser;
+import com.offline.billerservice.util.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -49,39 +52,63 @@ public class BillerInfoServiceImpl implements BillerInfoService {
 
     @Override
     public BillPaymentResponse makePayment(BillPaymentInput input) {
-       BillerCorePaymentResponse response = getPaymentResponse(input);
+       BillerCorePaymentResponse response = makePaymentDoLogAndResponse(input);
        BillPaymentResponse paymentResponse = new BillPaymentResponse();
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setResponseCode(response.getStatusCode().equals("200") ? "000":"103");
+        baseResponse.setResponseMessage(response.getMessage());
+        baseResponse.setTransactionId(response.getTransactionId());
+        paymentResponse.setResponse(baseResponse);
+        paymentResponse.setDateTime(String.valueOf(Calendar.getInstance().getTime()));
+        paymentResponse.setBillAmount(input.getFee());
         return paymentResponse;
     }
 
     @Override
-    public BillerCorePaymentResponse getPaymentResponse(BillPaymentInput input) {
+    public BillerCorePaymentResponse makePaymentDoLogAndResponse(BillPaymentInput input) {
 
         BillerCoreTransactionRequest request = generateCoreTransactionRequestFromInput(input);
         log.info("{}",request);
-        logBillerInfo(request,input.getBillerCode(),input.getKey1());
+//        logBillerInfo(request,input.getBillerCode(),input.getKey1());
         BillerCorePaymentResponse response = apiManagerGateway.paymentUnified(request);
-        logBillerInfo(response,input.getBillerCode(),input.getKey1());
+//        logBillerInfo(response,input.getBillerCode(),input.getKey1());
         log.info("{}",response);
         return response;
     }
+    private String generateRandomString(int length){
+        StringBuilder resultBuilder = new StringBuilder(length);
+        String alphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789";
+//                + "abcdefghijklmnopqrstuvxyz";
+        for(int i = 0; i < length;i++){
+            int indx = (int) (alphaNumericString.length() * Math.random());
 
+            resultBuilder.append(alphaNumericString.charAt(indx));
+        }
+        return resultBuilder.toString();
+    }
+    private  String generateTransactionReferenceId(String service_name){
+        String result = "";
+        DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+        String formattedTime = dateFormat.format(Calendar.getInstance().getTime());
+        result = service_name+ formattedTime;
+        result += generateRandomString(5);
+
+        return result;
+
+    }
     @Override
     public BillerCoreTransactionRequest generateCoreTransactionRequestFromInput(BillPaymentInput input) {
         BillerCoreTransactionRequest request = new BillerCoreTransactionRequest();
-        request.setTransactionTypeKeyWord("MPAY");
-        request.setAmount(input.getFee());
-        request.setFromAccount(input.getAccountNumber());
-        //key 1 to Account
-        request.setToAccount(input.getKey1());
-        request.setPIN(input.getPin());
-        request.setChannel(input.getPaymentChannel());
-        ArrayList<TransactionKeyValue> transactionRecordReplacerValues = new ArrayList<TransactionKeyValue>();
-        TransactionKeyValue transactionKeyValueForUserNumber = new TransactionKeyValue("ToUserNumber",input.getKey1());
-        transactionRecordReplacerValues.add(transactionKeyValueForUserNumber);
-        //Purpose key 2
-        TransactionKeyValue transactionKeyValueForPurpose = new TransactionKeyValue("Purpose",input.getKey2());
-        transactionRecordReplacerValues.add(transactionKeyValueForPurpose);
+        request.setSenderWalletNumber(CommonConstant.formatNumber(input.getAccountNumber()));
+        request.setReceiverWalletNumber(CommonConstant.formatNumber(input.getKey1()));
+        request.setTransactionReferenceId(generateTransactionReferenceId(input.getKey3()));
+        request.setTransactionType("SendMoney");
+        request.setChannel("app");
+        request.setAmount(input.getKey2());
+        request.setPin(input.getPin());
+        request.setPurpose(input.getKey7());
         return request;
     }
 }

@@ -1,11 +1,14 @@
 package com.offline.billerservice.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class BillerCorePaymentResponse {
-    private String TxCode;
-    private String Code;
-    private String Message;
-    private String TxId;
+   private String message;
+   private String transactionId;
+   private String statusCode;
 }

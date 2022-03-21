@@ -58,7 +58,7 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.10.5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+		<!-- https://mvnrepository.com/artifact/io.sringfox/springfox-boot-starter -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
@@ -85,27 +85,32 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.11.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.11.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.11.1</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
+<!--			<artifactId>jackson-core</artifactId>-->
+<!--			<version>2.11.4</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
+<!--			<artifactId>jackson-databind</artifactId>-->
+<!--			<version>2.11.4</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.fasterxml.jackson.dataformat</groupId>-->
+<!--			<artifactId>jackson-dataformat-xml</artifactId>-->
+<!--			<version>2.11.1</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp-urlconnection</artifactId>
 			<version>5.0.0-alpha.2</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

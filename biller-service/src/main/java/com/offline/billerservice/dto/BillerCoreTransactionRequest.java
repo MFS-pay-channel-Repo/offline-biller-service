@@ -1,16 +1,23 @@
 package com.offline.billerservice.dto;
 
-import lombok.Data;
+import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
+import javax.validation.constraints.NotEmpty;
+import java.util.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class BillerCoreTransactionRequest {
-    private String TransactionTypeKeyWord;
-    private String Amount;
-    private String FromAccount;
-    private String ToAccount;
-    private String PIN;
+    private String SenderWalletNumber;
+    private String ReceiverWalletNumber;
+    private String TransactionReferenceId;
+    private String TransactionType;
     private String Channel;
-    ArrayList<TransactionKeyValue> TransactionRecordReplacerValues = new ArrayList<TransactionKeyValue>();
+    private String Amount;
+    private String pin;
+    private String purpose;
 }

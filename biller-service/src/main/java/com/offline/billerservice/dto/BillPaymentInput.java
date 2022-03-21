@@ -1,20 +1,24 @@
 package com.offline.billerservice.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class BillPaymentInput {
-    public String billerCode;
-    public String paymentChannel;
-    public String accountNumber;
-    public String pin;
-    public String fee;
-    public String notificationNumber;
-    public String key1;
-    public String key2;
-    public String key3;
-    public String key4;
-    public String key5;
-    public String key6;
-    public String key7;
+    private String billerCode;
+    private String paymentChannel;
+    private String accountNumber;
+    private String pin;
+    private String fee;
+    private String notificationNumber;
+    private String key1;
+    private String key2;
+    private String key3;
+    private String key4;
+    private String key5;
+    private String key6;
+    private String key7;
 }

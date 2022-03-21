@@ -1,11 +1,14 @@
 package com.offline.billerservice.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class OfflineBillRequest {
     @NotNull
     private String billerCode;
