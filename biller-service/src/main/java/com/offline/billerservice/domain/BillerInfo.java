@@ -9,13 +9,14 @@ import java.math.BigInteger;
 import java.sql.Blob;
 
 @Entity
-@Table(name = "biller_info_id")
+@Table(name = "biller_info")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillerInfo {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private BigInteger id;
 
     @Column(name="biller_code")
@@ -29,4 +30,7 @@ public class BillerInfo {
 
     @Column(name="biller_details")
     private String billerDetails;
+
+    @Column(name="biller_subcategory")
+    private String billerSubcategory;
 }

@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
 public interface BillerInfoService {
 //    public void saveBillerInfoLog(BillerInfo billerInfo);
     public BillPaymentResponse makePayment(BillPaymentInput input);
-    public BillerCorePaymentResponse makePaymentDoLogAndResponse(BillPaymentInput input);
-    public BillerCoreTransactionRequest generateCoreTransactionRequestFromInput(BillPaymentInput input);
+    public BillerCorePaymentResponse makeZakatPaymentDoLogAndResponse(BillPaymentInput input);
+    public BillerCoreTransactionRequest generateCoreZakatTransactionRequest(BillPaymentInput input);
 }

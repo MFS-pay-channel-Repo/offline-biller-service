@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.offline.billerservice.domain.BillerInfo;
 import com.offline.billerservice.dto.*;
+import com.offline.billerservice.enumeration.OfflinePayCode;
+import com.offline.billerservice.enumeration.TransactionType;
 import com.offline.billerservice.gateway.ApiManagerGateway;
 import com.offline.billerservice.repository.BillerInfoRepository;
 //import jdk.nashorn.internal.parser.JSONParser;
@@ -52,7 +54,7 @@ public class BillerInfoServiceImpl implements BillerInfoService {
 
     @Override
     public BillPaymentResponse makePayment(BillPaymentInput input) {
-       BillerCorePaymentResponse response = makePaymentDoLogAndResponse(input);
+       BillerCorePaymentResponse response = makeZakatPaymentDoLogAndResponse(input);
        BillPaymentResponse paymentResponse = new BillPaymentResponse();
 
         BaseResponse baseResponse = new BaseResponse();
@@ -66,13 +68,13 @@ public class BillerInfoServiceImpl implements BillerInfoService {
     }
 
     @Override
-    public BillerCorePaymentResponse makePaymentDoLogAndResponse(BillPaymentInput input) {
+    public BillerCorePaymentResponse makeZakatPaymentDoLogAndResponse(BillPaymentInput input) {
 
-        BillerCoreTransactionRequest request = generateCoreTransactionRequestFromInput(input);
+        BillerCoreTransactionRequest request = generateCoreZakatTransactionRequest(input);
         log.info("{}",request);
-//        logBillerInfo(request,input.getBillerCode(),input.getKey1());
-        BillerCorePaymentResponse response = apiManagerGateway.paymentUnified(request);
-//        logBillerInfo(response,input.getBillerCode(),input.getKey1());
+        logBillerInfo(request,input.getBillerCode(),input.getKey1());
+        BillerCorePaymentResponse response = apiManagerGateway.zakatOfflinePayment(request);
+        logBillerInfo(response,input.getBillerCode(),input.getKey1());
         log.info("{}",response);
         return response;
     }
@@ -99,12 +101,12 @@ public class BillerInfoServiceImpl implements BillerInfoService {
 
     }
     @Override
-    public BillerCoreTransactionRequest generateCoreTransactionRequestFromInput(BillPaymentInput input) {
+    public BillerCoreTransactionRequest generateCoreZakatTransactionRequest(BillPaymentInput input) {
         BillerCoreTransactionRequest request = new BillerCoreTransactionRequest();
         request.setSenderWalletNumber(CommonConstant.formatNumber(input.getAccountNumber()));
-        request.setReceiverWalletNumber(CommonConstant.formatNumber(input.getKey1()));
+        request.setReceiverCode(OfflinePayCode.ZAKAT_CODE.getValue());
         request.setTransactionReferenceId(generateTransactionReferenceId(input.getKey3()));
-        request.setTransactionType("SendMoney");
+        request.setTransactionType(TransactionType.ZAKAT_CODE.getValue());
         request.setChannel("app");
         request.setAmount(input.getKey2());
         request.setPin(input.getPin());

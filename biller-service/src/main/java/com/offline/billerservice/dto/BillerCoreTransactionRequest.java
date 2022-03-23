@@ -13,7 +13,7 @@ import java.util.*;
 @ToString
 public class BillerCoreTransactionRequest {
     private String SenderWalletNumber;
-    private String ReceiverWalletNumber;
+    private String ReceiverCode;
     private String TransactionReferenceId;
     private String TransactionType;
     private String Channel;
