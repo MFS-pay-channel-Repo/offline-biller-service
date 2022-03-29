@@ -2,6 +2,7 @@ package com.offline.billerservice.controller;
 
 import com.offline.billerservice.dto.BillPaymentInput;
 import com.offline.billerservice.dto.BillPaymentResponse;
+import com.offline.billerservice.dto.MadrasaResponse;
 import com.offline.billerservice.service.BillerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,12 @@ public class BillerController {
     @Autowired
     BillerInfoService billerInfoService;
 
+    @ResponseBody
+    @GetMapping("/billing/offline/zakat")
+    public MadrasaResponse getZakatList(){
+
+        return null;
+    }
     @ResponseBody
     @PostMapping("/billing/offline/payment")
     public BillPaymentResponse billPaymentResponse(@Valid @RequestBody BillPaymentInput billPaymentInput,

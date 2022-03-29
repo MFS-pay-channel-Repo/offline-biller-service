@@ -54,10 +54,18 @@ public class BillerInfoServiceImpl implements BillerInfoService {
 
     @Override
     public BillPaymentResponse makePayment(BillPaymentInput input) {
-       BillerCorePaymentResponse response = makeZakatPaymentDoLogAndResponse(input);
-       BillPaymentResponse paymentResponse = new BillPaymentResponse();
-
         BaseResponse baseResponse = new BaseResponse();
+        BillPaymentResponse paymentResponse = new BillPaymentResponse();
+        if(!input.getBillerCode().equals("zakat")){
+            baseResponse.setResponseType("103");
+            baseResponse.setResponseMessage("Biller Code not found!");
+            paymentResponse.setResponse(baseResponse);
+            return paymentResponse;
+        }
+        BillerCorePaymentResponse response = makeZakatPaymentDoLogAndResponse(input);
+
+
+
         baseResponse.setResponseCode(response.getStatusCode().equals("200") ? "000":"103");
         baseResponse.setResponseMessage(response.getMessage());
         baseResponse.setTransactionId(response.getTransactionId());
