@@ -97,17 +97,23 @@ public class UtilityServiceImpl implements UtilityService{
     @Override
     public MadrasaResponse[] getMadrasaList(MadrasaRequest madrasaRequest) {
         List<MadrasaResponse> madrasaResponseList = new ArrayList<>();
-        List<Tuple> resultList = entityManager.createNativeQuery("SELECT * from offline_madrasa\n" +
+        List<Tuple> resultList = entityManager.createNativeQuery("SELECT madrasa_code as madrasa_code," +
+                "madrasa_name as madrasa_name,\n" +
+                "madrasa_type as madrasa_type,\n"+
+                "established_date as established_date,\n"+
+                "eiin as eiin\n"+
+                " from offline_madrasa\n" +
                 "where area = '"+ madrasaRequest.getArea()+"' and thana='"+madrasaRequest.getThana()+"'",Tuple.class)
                 .getResultList();
         Long cnt = Long.valueOf(0);
         for(Tuple tuple: resultList){
             MadrasaResponse madrasaResponse = new MadrasaResponse();
+            log.debug("{}",tuple);
             madrasaResponse.setId(++cnt);
             madrasaResponse.setUuid(UUID.randomUUID().toString());
             madrasaResponse.setCode(tuple.get("madrasa_code").toString());
             madrasaResponse.setMadrasa_name(tuple.get("madrasa_name").toString());
-            madrasaResponse.setMadrasa_name(tuple.get("madrasa_type").toString());
+            madrasaResponse.setMadrasa_type(tuple.get("madrasa_type").toString());
             madrasaResponse.setEstablished_date(tuple.get("established_date").toString());
             madrasaResponse.setEiin(tuple.get("eiin").toString());
             madrasaResponseList.add(madrasaResponse);

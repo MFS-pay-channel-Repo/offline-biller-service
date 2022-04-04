@@ -4,6 +4,8 @@ package com.offline.billerservice.gateway;
 import com.google.gson.Gson;
 import com.offline.billerservice.dto.BillerCorePaymentResponse;
 import com.offline.billerservice.dto.BillerCoreTransactionRequest;
+import com.offline.billerservice.dto.TransactionFeeCoreRequest;
+import com.offline.billerservice.dto.TransactionFeeCoreResponse;
 import com.offline.billerservice.enumeration.APIInfo;
 import com.offline.billerservice.enumeration.CoreUrl;
 import com.offline.billerservice.util.CommonConstant;
@@ -73,5 +75,28 @@ public class ApiManagerGateway {
 
         return response;
     }
+
+    public TransactionFeeCoreResponse getTransactionFee(TransactionFeeCoreRequest request){
+        TransactionFeeCoreResponse response = new TransactionFeeCoreResponse();
+
+        MediaType mediaType = MediaType.parse(APIInfo.JSON_VALUE.getValue());
+        RequestBody requestBody = RequestBody.create(mediaType,gson.toJson(request));
+
+        try {
+            Request request_ = new Request.Builder()
+                    .url(genericCoreBill+CoreUrl.TX_FEE.getUrl())
+                    .method("POST",requestBody)
+                    .addHeader("Content-Type", APIInfo.JSON_VALUE.getValue())
+                    .build();
+            ResponseBody responseBody = okHttpClient.newCall(request_).execute().body();
+            response = gson.fromJson(CommonConstant.formatString(responseBody.string()), TransactionFeeCoreResponse.class);
+        } catch (Exception e) {
+            response.setStatusCode(Integer.valueOf(CommonConstant.HTTP_5XX_ERROR));
+            response.setMessage(CommonConstant.API_REQUEST_FAIL);
+        }
+
+        return response;
+    }
+
 
 }

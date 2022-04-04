@@ -4,7 +4,8 @@ public enum CoreUrl{
     GENERIC_PAYMENT("/GenericPayment"),
     DIRECT_PAYMENT("/GenericTxt/DirectPayment"),
     OFFLINE_PAYMENT("/OffLineBillpay/OffLinePayment"),
-    ZAKAT_PAYMENT("/ZakatPay/ZakatPayment");
+    ZAKAT_PAYMENT("/ZakatPay/ZakatPayment"),
+    TX_FEE("/GenericTxt/GenericTransactionFee");
     private String url;
     CoreUrl(String envUrl) {
         this.url = envUrl;
